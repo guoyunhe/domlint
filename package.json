@@ -64,7 +64,8 @@
   "dependencies": {
     "@ant-design/fast-color": "^3.0.0",
     "@guoyunhe/unique-selector": "^1.0.0",
-    "chalk": "^5.4.1"
+    "chalk": "^5.4.1",
+    "classnames": "^2.5.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",

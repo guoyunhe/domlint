@@ -8,7 +8,7 @@ Lint DOM class, style and attributes
 npm i -S domlint
 ```
 
-## Usage
+## API Usage
 
 ```jsx
 import { DOMLint } from 'domlint';
@@ -44,4 +44,39 @@ const report = domlint.lint();
 domlint.print();
 
 render(<div>{report.score}</div>);
+```
+
+## UI Usage
+
+```jsx
+import { DOMLintUI } from 'domlint';
+
+const config = {
+  rules: {
+    a: {
+      style: {
+        'border-left-width': { expected: ['0px', '1px'] },
+      },
+    },
+    'code, pre': {
+      style: {
+        'background-color': {
+          expected: '#f6f8fa',
+        },
+      },
+    },
+    img: {
+      exist: {
+        goodness: 10,
+        badness: 20,
+      },
+    },
+    h2: {
+      deprecated: {},
+    },
+  },
+  ignore: ['script'],
+};
+
+render(<DOMLintUI config={config} />);
 ```

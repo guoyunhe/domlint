@@ -19,7 +19,7 @@ export interface DOMLintElementReport {
    */
   selector: string;
   /**
-   * HTML of the DOM element, maximum 255 characters
+   * HTML of the DOM element, maximum 100 characters
    */
   html?: string;
   /**

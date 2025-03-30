@@ -24,7 +24,7 @@ export class DOMLint {
                 goodness: elemRule.exist.goodness ?? 1,
                 badness: elemRule.exist.badness ?? 1,
                 value: 'missing',
-                expected: 'existing',
+                expected: elemRule.exist.expected ?? 'existing',
               },
             },
           };
@@ -46,7 +46,7 @@ export class DOMLint {
 
           const elemReport: DOMLintElementReport = report.elements[uniqueSelector] || {
             selector: uniqueSelector,
-            html: elem.outerHTML.substring(0, 255),
+            html: elem.outerHTML.substring(0, 100),
             attributes: {},
           };
 
@@ -56,7 +56,7 @@ export class DOMLint {
               goodness: elemRule.deprecated.goodness ?? 1,
               badness: elemRule.deprecated.badness ?? 1,
               value: 'found',
-              expected: 'removed',
+              expected: elemRule.deprecated.expected ?? 'removed',
             };
           }
 

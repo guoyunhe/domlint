@@ -12,7 +12,9 @@ export function printReport(report?: DOMLintReport) {
 
   Object.entries(report.elements).forEach(([selector, elemReport]) => {
     output.push(chalk.blue(selector));
-    output.push(chalk.gray(elemReport.html));
+    if (elemReport.html) {
+      output.push(chalk.gray(elemReport.html));
+    }
 
     Object.entries(elemReport.attributes)?.forEach(([name, attrReport]) => {
       let line = `\t${chalk.yellow(name)}: `;

@@ -1,4 +1,6 @@
 {
+  "name": "domlint",
+  "description": "Lint DOM styles and attributes",
   "homepage": "https://github.com/guoyunhe/domlint#readme",
   "bugs": {
     "url": "https://github.com/guoyunhe/domlint/issues"

@@ -1,0 +1,66 @@
+import unique from '@cypress/unique-selector';
+import { DOMLintConfig } from './DOMLintConfig';
+import { DOMLintAttributeReport, DOMLintElementReport, DOMLintReport } from './DOMLintReport';
+import { validateStyle } from './validateStyle';
+
+export class DOMLint {
+  constructor(public config: DOMLintConfig) {}
+
+  lint(root?: Element): DOMLintReport {
+    const report: DOMLintReport = { elements: {} };
+
+    Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
+      if (elemRule.exist && !document.querySelector(selector)) {
+        report.elements[selector] = {
+          selector,
+          attributes: {
+            exist: {
+              pass: false,
+              goodness: elemRule.exist.goodness,
+              badness: elemRule.exist.badness,
+            },
+          },
+        };
+      }
+    });
+
+    (root || document).querySelectorAll('*').forEach((elem) => {
+      const ignored = this.config.ignore?.some((selector) => elem.matches(selector));
+      if (ignored) return;
+
+      Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
+        const matched = elem.matches(selector);
+        if (!matched) return;
+
+        const uniqueSelector = unique(elem);
+
+        const elemReport: DOMLintElementReport = report.elements[uniqueSelector] || {
+          selector: uniqueSelector,
+          html: elem.outerHTML.substring(0, 255),
+          attributes: {},
+        };
+
+        elem instanceof HTMLElement &&
+          Object.entries(elemRule.style).forEach(([name, rule]) => {
+            const reportKey = `style.${name}`;
+            const attrReport: DOMLintAttributeReport = elemReport.attributes[reportKey] ?? {
+              pass: true,
+              goodness: rule.goodness ?? 1,
+              badness: rule.badness ?? 1,
+              expected: rule.expected,
+            };
+
+            if (!attrReport.pass) return;
+
+            attrReport.pass = validateStyle(elem, name, rule.expected);
+
+            elemReport.attributes[reportKey] = attrReport;
+          });
+
+        report.elements[uniqueSelector] = elemReport;
+      });
+    });
+
+    return report;
+  }
+}

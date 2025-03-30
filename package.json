@@ -69,5 +69,9 @@
     "doc": {
       "basename": "/domlint/"
     }
+  },
+  "dependencies": {
+    "@ant-design/fast-color": "^3.0.0",
+    "@cypress/unique-selector": "^2.0.1"
   }
 }

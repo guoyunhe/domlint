@@ -1,2 +1,3 @@
+export * from './DOMLint';
 export * from './DOMLintConfig';
-export * from './DOMLintRule';
+export * from './DOMLintReport';

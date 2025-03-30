@@ -1,6 +1,14 @@
 {
   "name": "domlint",
   "description": "Lint DOM styles and attributes",
+  "keywords": [
+    "lint",
+    "dom",
+    "style",
+    "theme",
+    "prettify",
+    "consistancy"
+  ],
   "homepage": "https://github.com/guoyunhe/domlint#readme",
   "bugs": {
     "url": "https://github.com/guoyunhe/domlint/issues"

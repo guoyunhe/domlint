@@ -85,5 +85,5 @@
     "@guoyunhe/unique-selector": "^1.0.0",
     "chalk": "^5.4.1"
   },
-  "version": "0.2.1"
+  "version": "0.2.2"
 }

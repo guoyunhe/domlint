@@ -1,4 +1,4 @@
-import unique from '@cypress/unique-selector';
+import unique from '@guoyunhe/unique-selector';
 import { DOMLintConfig } from './DOMLintConfig';
 import { DOMLintAttributeReport, DOMLintElementReport, DOMLintReport } from './DOMLintReport';
 import { printReport } from './printReport';

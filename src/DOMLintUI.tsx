@@ -12,8 +12,21 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
   const domlint = useMemo(() => new DOMLint(config), [config]);
   const [report, setReport] = useState<DOMLintReport | null>(null);
 
+  const [left, setLeft] = useState(10);
+  const [top, setTop] = useState(10);
+
   return (
-    <div className="domlint-ui">
+    <div
+      className="domlint-ui"
+      style={{ left, top }}
+      onMouseMove={(e) => {
+        console.log(e.button);
+        if (e.button) {
+          setLeft((prev) => prev + e.movementX);
+          setTop((prev) => prev + e.movementY);
+        }
+      }}
+    >
       <div className="domlint-ui-toolbar">
         <button
           className="domlint-ui-button"
@@ -33,7 +46,12 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
           📝 View Result
         </button>
 
-        <span>{report?.score}</span>
+        <span className="domlint-ui-score">
+          Score:{' '}
+          <span className={`domlint-ui-score-value domlint-ui-score-value-${report?.level}`}>
+            {report?.score || 0}
+          </span>
+        </span>
       </div>
 
       <div>{}</div>

@@ -1,7 +1,6 @@
 .domlint-ui {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
+  width: 400px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   padding: 10px;
@@ -13,7 +12,13 @@
 
 .domlint-ui-toolbar {
   display: flex;
+  align-items: center;
   gap: 8px;
+  cursor: grab;
+}
+
+.domlint-ui-toolbar:active {
+  cursor: grabbing;
 }
 
 .domlint-ui-button {
@@ -31,4 +36,24 @@
 
 .domlint-ui-button:active {
   filter: brightness(80%);
+}
+
+.domlint-ui-score {
+  font-size: 16px;
+}
+
+.domlint-ui-score-value {
+  font-weight: bold;
+}
+
+.domlint-ui-score-value-good {
+  color: #008600;
+}
+
+.domlint-ui-score-value-okay {
+  color: #eb7900;
+}
+
+.domlint-ui-score-value-bad {
+  color: #da0e0e;
 }

@@ -11,7 +11,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "types": ["node", "rive/globals"],
-    "noEmit": true
+    "noEmit": true,
+    "strict": true
   },
   "exclude": [".rive", "build", "coverage", "dist", "node_modules"]
 }

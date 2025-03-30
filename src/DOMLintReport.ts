@@ -7,6 +7,7 @@ export interface DOMLintReport {
    * ```
    */
   score: number;
+  level: 'good' | 'okay' | 'bad';
   goodness: number;
   badness: number;
   elements: Record<string, DOMLintElementReport>;
@@ -24,7 +25,7 @@ export interface DOMLintElementReport {
   /**
    * Attributes
    */
-  attributes?: Record<string, DOMLintAttributeReport>;
+  attributes: Record<string, DOMLintAttributeReport>;
 }
 
 export interface DOMLintAttributeReport {

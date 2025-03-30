@@ -1,3 +1,4 @@
+import { FastColor } from '@ant-design/fast-color';
 import unique from '@guoyunhe/unique-selector';
 import { DOMLintConfig } from './DOMLintConfig';
 import { DOMLintAttributeReport, DOMLintElementReport, DOMLintReport } from './DOMLintReport';
@@ -5,65 +6,76 @@ import { printReport } from './printReport';
 import { validateStyle } from './validateStyle';
 
 export class DOMLint {
-  report: DOMLintReport;
+  report: DOMLintReport | undefined = undefined;
 
   constructor(public config: DOMLintConfig) {}
 
   lint(root?: Element): DOMLintReport {
-    const report: DOMLintReport = { score: 0, goodness: 0, badness: 0, elements: {} };
+    const report: DOMLintReport = { score: 0, level: 'bad', goodness: 0, badness: 0, elements: {} };
 
-    Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
-      if (elemRule.exist && !document.querySelector(selector)) {
-        report.elements[selector] = {
-          selector,
-          attributes: {
-            exist: {
-              pass: false,
-              goodness: elemRule.exist.goodness,
-              badness: elemRule.exist.badness,
-              value: 'missing',
+    this.config.rules &&
+      Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
+        if (elemRule.exist && !document.querySelector(selector)) {
+          report.elements[selector] = {
+            selector,
+            attributes: {
+              exist: {
+                pass: false,
+                goodness: elemRule.exist.goodness ?? 1,
+                badness: elemRule.exist.badness ?? 1,
+                value: 'missing',
+              },
             },
-          },
-        };
-      }
-    });
+          };
+        }
+      });
 
     (root || document).querySelectorAll('*').forEach((elem) => {
       const ignored = this.config.ignore?.some((selector) => elem.matches(selector));
       if (ignored) return;
 
-      Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
-        const matched = elem.matches(selector);
-        if (!matched) return;
+      this.config.rules &&
+        Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
+          const matched = elem.matches(selector);
+          if (!matched) return;
 
-        const uniqueSelector = unique(elem);
+          const uniqueSelector = unique(elem);
 
-        const elemReport: DOMLintElementReport = report.elements[uniqueSelector] || {
-          selector: uniqueSelector,
-          html: elem.outerHTML.substring(0, 255),
-          attributes: {},
-        };
+          if (!uniqueSelector) return;
 
-        elem instanceof HTMLElement &&
-          Object.entries(elemRule.style).forEach(([name, rule]) => {
-            const reportKey = `style.${name}`;
-            const attrReport: DOMLintAttributeReport = elemReport.attributes[reportKey] ?? {
-              pass: true,
-              goodness: rule.goodness ?? 1,
-              badness: rule.badness ?? 1,
-              value: elem.computedStyleMap().get(name).toString(),
-              expected: rule.expected,
-            };
+          const elemReport: DOMLintElementReport = report.elements[uniqueSelector] || {
+            selector: uniqueSelector,
+            html: elem.outerHTML.substring(0, 255),
+            attributes: {},
+          };
 
-            if (!attrReport.pass) return;
+          elem instanceof HTMLElement &&
+            elemRule.style &&
+            Object.entries(elemRule.style).forEach(([name, rule]) => {
+              const reportKey = `style.${name}`;
+              const attrReport: DOMLintAttributeReport = elemReport.attributes[reportKey] ?? {
+                pass: true,
+                goodness: rule.goodness ?? 1,
+                badness: rule.badness ?? 1,
+                value: elem.computedStyleMap().get(name)?.toString() ?? 'none',
+                expected: rule.expected,
+              };
 
-            attrReport.pass = validateStyle(elem, name, rule.expected);
+              if (!attrReport.pass) return;
 
-            elemReport.attributes[reportKey] = attrReport;
-          });
+              if (name === 'color' || name.endsWith('-color')) {
+                const colorObj = new FastColor(attrReport.value);
+                attrReport.value =
+                  colorObj.a === 1 ? colorObj.toHexString() : colorObj.toRgbString();
+              }
 
-        report.elements[uniqueSelector] = elemReport;
-      });
+              attrReport.pass = !!rule.expected && validateStyle(elem, name, rule.expected);
+
+              elemReport.attributes[reportKey] = attrReport;
+            });
+
+          report.elements[uniqueSelector] = elemReport;
+        });
     });
 
     Object.values(report.elements).forEach((elemReport) => {
@@ -77,6 +89,18 @@ export class DOMLint {
     });
 
     report.score = Math.floor((report.goodness / (report.goodness + report.badness)) * 100);
+
+    if (Number.isNaN(report.score)) {
+      report.score = 0;
+    }
+
+    if (report.score >= (this.config.threshold?.good ?? 90)) {
+      report.level = 'good';
+    } else if (report.score >= (this.config.threshold?.okay ?? 75)) {
+      report.level = 'okay';
+    } else {
+      report.level = 'bad';
+    }
 
     this.report = report;
 

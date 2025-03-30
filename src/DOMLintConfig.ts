@@ -1,4 +1,8 @@
 export interface DOMLintConfig {
+  threshold?: {
+    good: number;
+    okay: number;
+  };
   rules?: Record<string, DOMLintElementRule>;
   ignore?: string[];
 }

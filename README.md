@@ -20,12 +20,21 @@ const domlint = new DOMLint({
         'border-left-width': { expected: ['0px', '1px'] },
       },
     },
-    pre: {
+    'code, pre': {
       style: {
         'background-color': {
-          expected: ['#f5f5f5'],
+          expected: '#f6f8fa',
         },
       },
+    },
+    img: {
+      exist: {
+        goodness: 10,
+        badness: 20,
+      },
+    },
+    h2: {
+      deprecated: {},
     },
   },
   ignore: ['script'],

@@ -24,6 +24,7 @@ export class DOMLint {
                 goodness: elemRule.exist.goodness ?? 1,
                 badness: elemRule.exist.badness ?? 1,
                 value: 'missing',
+                expected: 'existing',
               },
             },
           };
@@ -48,6 +49,16 @@ export class DOMLint {
             html: elem.outerHTML.substring(0, 255),
             attributes: {},
           };
+
+          if (elemRule.deprecated) {
+            elemReport.attributes.deprecated = {
+              pass: false,
+              goodness: elemRule.deprecated.goodness ?? 1,
+              badness: elemRule.deprecated.badness ?? 1,
+              value: 'found',
+              expected: 'removed',
+            };
+          }
 
           elem instanceof HTMLElement &&
             elemRule.style &&

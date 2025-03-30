@@ -1,4 +1,14 @@
 export interface DOMLintReport {
+  /**
+   * Overall score, range from 0 to 100
+   *
+   * ```js
+   * score = Math.floor(goodness / (goodness + badness) * 100)
+   * ```
+   */
+  score: number;
+  goodness: number;
+  badness: number;
   elements: Record<string, DOMLintElementReport>;
 }
 

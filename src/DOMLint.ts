@@ -7,7 +7,7 @@ export class DOMLint {
   constructor(public config: DOMLintConfig) {}
 
   lint(root?: Element): DOMLintReport {
-    const report: DOMLintReport = { elements: {} };
+    const report: DOMLintReport = { score: 0, goodness: 0, badness: 0, elements: {} };
 
     Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
       if (elemRule.exist && !document.querySelector(selector)) {
@@ -60,6 +60,18 @@ export class DOMLint {
         report.elements[uniqueSelector] = elemReport;
       });
     });
+
+    Object.values(report.elements).forEach((elemReport) => {
+      Object.values(elemReport.attributes).forEach((attrReport) => {
+        if (attrReport.pass) {
+          report.goodness += attrReport.goodness;
+        } else {
+          report.badness += attrReport.badness;
+        }
+      });
+    });
+
+    report.score = Math.floor((report.goodness / (report.goodness + report.badness)) * 100);
 
     return report;
   }

@@ -1,9 +1,12 @@
 import unique from '@cypress/unique-selector';
 import { DOMLintConfig } from './DOMLintConfig';
 import { DOMLintAttributeReport, DOMLintElementReport, DOMLintReport } from './DOMLintReport';
+import { printReport } from './printReport';
 import { validateStyle } from './validateStyle';
 
 export class DOMLint {
+  report: DOMLintReport;
+
   constructor(public config: DOMLintConfig) {}
 
   lint(root?: Element): DOMLintReport {
@@ -18,6 +21,7 @@ export class DOMLint {
               pass: false,
               goodness: elemRule.exist.goodness,
               badness: elemRule.exist.badness,
+              value: 'missing',
             },
           },
         };
@@ -47,6 +51,7 @@ export class DOMLint {
               pass: true,
               goodness: rule.goodness ?? 1,
               badness: rule.badness ?? 1,
+              value: elem.computedStyleMap().get(name).toString(),
               expected: rule.expected,
             };
 
@@ -73,6 +78,12 @@ export class DOMLint {
 
     report.score = Math.floor((report.goodness / (report.goodness + report.badness)) * 100);
 
+    this.report = report;
+
     return report;
+  }
+
+  print(report?: DOMLintReport) {
+    printReport(report || this.report);
   }
 }

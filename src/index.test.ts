@@ -1,11 +1,5 @@
-import { domlint } from '.';
+import * as members from '.';
 
-describe('domlint', () => {
-  it('normal', async () => {
-    expect(domlint('Foo', 'Bar')).toBe('Foo Bar');
-  });
-
-  it('lastName upper case', async () => {
-    expect(domlint('Foo', 'Bar', { lastNameUpperCase: true })).toBe('Foo BAR');
-  });
+test('members should match snapshots', () => {
+  expect(members).toMatchSnapshot();
 });

@@ -69,15 +69,19 @@
 
 .domlint-ui-element {
   border-bottom: 1px solid #333;
-  padding: 20px 0;
+  padding: 12px 0;
 }
 
 .domlint-ui-selector {
   color: #08e;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .domlint-ui-attribute-list {
   padding-left: 24px;
+  margin-bottom: 4px;
 }
 
 .domlint-ui-attribute-name {
@@ -90,7 +94,7 @@
 
 .domlint-ui-highlight {
   position: fixed;
-  outline: 3px solid #6cf;
+  outline: 3px solid #d400ff;
   background: #6cf1;
   left: -99px;
   top: -99px;

@@ -102,6 +102,7 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
                 >
                   {selector}
                 </a>
+
                 <div className="domlint-ui-attribute-list">
                   {Object.entries(elemReport.attributes).map(([name, attrReport]) => (
                     <div key={name} className="domlint-ui-attribute">

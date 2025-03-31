@@ -92,7 +92,11 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
                   onClick={(e) => {
                     e.preventDefault();
                     const elem = document.querySelector(selector);
-                    elem?.scrollIntoView();
+                    elem?.scrollIntoView({
+                      block: 'center',
+                      inline: 'center',
+                      behavior: 'smooth',
+                    });
                     setHighlightElement(elem);
                   }}
                 >

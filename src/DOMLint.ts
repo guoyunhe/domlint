@@ -60,8 +60,13 @@ export class DOMLint {
             };
           }
 
-          elem instanceof HTMLElement &&
-            elemRule.style &&
+          elemRule.style &&
+            elem instanceof HTMLElement &&
+            elem.checkVisibility({
+              contentVisibilityAuto: true,
+              opacityProperty: true,
+              visibilityProperty: true,
+            }) &&
             Object.entries(elemRule.style).forEach(([name, rule]) => {
               const reportKey = `style.${name}`;
               const attrReport: DOMLintAttributeReport = elemReport.attributes[reportKey] ?? {
@@ -85,7 +90,9 @@ export class DOMLint {
               elemReport.attributes[reportKey] = attrReport;
             });
 
-          report.elements[uniqueSelector] = elemReport;
+          if (Object.keys(elemReport.attributes).length > 0) {
+            report.elements[uniqueSelector] = elemReport;
+          }
         });
     });
 

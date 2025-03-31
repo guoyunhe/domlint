@@ -95,9 +95,10 @@
 .domlint-ui-highlight {
   position: fixed;
   outline: 3px solid #d400ff;
-  background: #6cf1;
+  background: #d400ff11;
   left: -99px;
   top: -99px;
   z-index: 999999;
   pointer-events: none;
+  transition: all ease-in-out 0.3s;
 }

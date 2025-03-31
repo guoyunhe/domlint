@@ -61,7 +61,7 @@ const config = {
     'code, pre': {
       style: {
         'background-color': {
-          expected: '#f6f8fa',
+          expected: ['#f3f3f3', '#f8f8f8'],
         },
       },
     },

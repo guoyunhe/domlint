@@ -8,6 +8,10 @@
   background: #222;
   color: #fff;
   z-index: 9999999;
+
+  --domlint-bad: #da0e0e;
+  --domlint-okay: #008600;
+  --domlint-okay: #eb7900;
 }
 
 .domlint-ui-toolbar {
@@ -50,15 +54,15 @@
 }
 
 .domlint-ui-score-value-good {
-  color: #008600;
+  color: var(--domlint-okay);
 }
 
 .domlint-ui-score-value-okay {
-  color: #eb7900;
+  color: var(--domlint-okay);
 }
 
 .domlint-ui-score-value-bad {
-  color: #da0e0e;
+  color: var(--domlint-bad);
 }
 
 .domlint-ui-report {
@@ -75,7 +79,7 @@
 .domlint-ui-selector {
   color: #08e;
   text-decoration: none;
-  display: block;
+  display: inline-block;
   margin-bottom: 4px;
 }
 
@@ -89,7 +93,23 @@
 }
 
 .domlint-ui-attribute-value-bad {
-  color: #da0e0e;
+  color: var(--domlint-bad);
+}
+
+.domlint-ui-value + .domlint-ui-value::before {
+  content: ' | ';
+}
+
+.domlint-ui-color-box {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+
+.domlint-ui-attribute-expected {
+  color: #aaa;
 }
 
 .domlint-ui-highlight {

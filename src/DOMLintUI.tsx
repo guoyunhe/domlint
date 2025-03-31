@@ -114,12 +114,16 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
                           !attrReport.pass && 'domlint-ui-attribute-value-bad',
                         )}
                       >
-                        {attrReport.value}
+                        {renderValue(attrReport.value)}
                       </span>
                       <span>&nbsp;</span>
                       {!attrReport.pass && (
                         <span className="domlint-ui-attribute-expected">
-                          [expected: {attrReport.expected}]
+                          [expected:{' '}
+                          {Array.isArray(attrReport.expected)
+                            ? attrReport.expected.map(renderValue)
+                            : renderValue(attrReport.expected || 'none')}
+                          ]
                         </span>
                       )}
                     </div>
@@ -133,4 +137,20 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
       <div ref={highlightRef} className="domlint-ui-highlight" />
     </>
   );
+}
+
+function renderValue(value: string, index?: number) {
+  if (value.startsWith('#') || value.startsWith('rgba(')) {
+    return (
+      <span key={index} className="domlint-ui-value">
+        <span className="domlint-ui-color-box" style={{ background: value }} /> {value}
+      </span>
+    );
+  } else {
+    return (
+      <span key={index} className="domlint-ui-value">
+        {value}
+      </span>
+    );
+  }
 }

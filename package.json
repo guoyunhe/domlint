@@ -32,6 +32,7 @@
     "LICENSE",
     "README.md"
   ],
+  "sideEffects": ["*.css"],
   "scripts": {
     "build": "rive build",
     "build:watch": "rive build --watch",

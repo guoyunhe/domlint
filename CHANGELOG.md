@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0 - 2025-04-01
+
+- Removed `DOMLintUI` react component, use `domlint-ui` package instead for better tree-shaking
+
 ## 0.3.0 - 2025-03-31
 
 - Added `DOMLintUI` react component

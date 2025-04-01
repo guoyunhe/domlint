@@ -12,8 +12,7 @@
     "isolatedModules": true,
     "types": ["node", "rive/globals"],
     "noEmit": true,
-    "strict": true,
-    "jsx": "react-jsx"
+    "strict": true
   },
   "exclude": [".rive", "build", "coverage", "dist", "node_modules"]
 }

@@ -2,6 +2,7 @@ import { FastColor } from '@ant-design/fast-color';
 import unique from '@guoyunhe/unique-selector';
 import { DOMLintConfig } from './DOMLintConfig';
 import { DOMLintAttributeReport, DOMLintElementReport, DOMLintReport } from './DOMLintReport';
+import { needValidateStyle } from './needValidateStyle';
 import { printReport } from './printReport';
 import { validateStyle } from './validateStyle';
 
@@ -65,11 +66,7 @@ export class DOMLint {
 
           elemRule.style &&
             elem instanceof HTMLElement &&
-            elem.checkVisibility({
-              contentVisibilityAuto: true,
-              opacityProperty: true,
-              visibilityProperty: true,
-            }) &&
+            needValidateStyle(elem) &&
             Object.entries(elemRule.style).forEach(([name, rule]) => {
               const reportKey = `style.${name}`;
               const attrReport: DOMLintAttributeReport = elemReport.attributes[reportKey] ?? {

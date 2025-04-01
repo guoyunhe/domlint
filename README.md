@@ -43,7 +43,12 @@ const domlint = new DOMLint({
 const report = domlint.lint();
 domlint.print();
 
-render(<div>{report.score}</div>);
+render(
+  <div>
+    {report.score}
+    <a id="abc" />
+  </div>,
+);
 ```
 
 ## DOMLint UI

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 - 2025-04-02
+
+- Ignore zero-size element for style checking
+
 ## 0.4.0 - 2025-04-01
 
 - Removed `DOMLintUI` react component, use `domlint-ui` package instead for better tree-shaking

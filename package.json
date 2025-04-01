@@ -1,6 +1,6 @@
 {
   "name": "domlint",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Lint DOM styles and attributes",
   "keywords": [
     "lint",
@@ -32,7 +32,9 @@
     "LICENSE",
     "README.md"
   ],
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "build": "rive build",
     "build:watch": "rive build --watch",

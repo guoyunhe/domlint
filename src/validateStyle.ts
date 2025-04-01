@@ -9,10 +9,10 @@ export function validateStyle(
     return expected.some((item) => validateStyle(elem, name, item));
   }
 
-  for (const side of ['top', 'bottom', 'left', 'end']) {
-    if (name === `border-${side}-color`) {
+  for (const side of ['', '-top', '-bottom', '-left', '-end']) {
+    if (name === `border${side}-color`) {
       // for zero width border, border-color comparison is meaningless
-      if (elem.computedStyleMap().get(`border-${side}-color`)?.toString() === '0px') {
+      if (elem.computedStyleMap().get(`border${side}-color`)?.toString() === '0px') {
         return null;
       }
     }

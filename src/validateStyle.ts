@@ -5,10 +5,6 @@ export function validateStyle(
   name: string,
   expected: string | string[],
 ): boolean | null {
-  if (Array.isArray(expected)) {
-    return expected.some((item) => validateStyle(elem, name, item));
-  }
-
   for (const side of ['', '-top', '-bottom', '-left', '-end']) {
     if (name === `border${side}-color`) {
       // for zero width border, border-color comparison is meaningless
@@ -16,6 +12,10 @@ export function validateStyle(
         return null;
       }
     }
+  }
+
+  if (Array.isArray(expected)) {
+    return expected.some((item) => validateStyle(elem, name, item));
   }
 
   if (name === 'color' || name.endsWith('-color')) {

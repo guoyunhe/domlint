@@ -23,8 +23,8 @@ export function validateStyle(
     return new FastColor(value || 'rgba(0,0,0,0)').equals(new FastColor(expected));
   } else if (name.endsWith('-radius') && expected === 'round') {
     const rect = elem.getBoundingClientRect();
-    const value = elem.computedStyleMap().get(name) as CSSNumericValue;
-    return value && parseFloat(value.toString()) <= Math.min(rect.width, rect.height) / 2;
+    const value = elem.computedStyleMap().get(name)?.toString();
+    return !!value && parseFloat(value) >= Math.min(rect.width, rect.height) / 2;
   } else {
     const value = elem.computedStyleMap().get(name)?.toString();
     return value === expected;

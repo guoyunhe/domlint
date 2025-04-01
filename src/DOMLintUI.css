@@ -10,7 +10,7 @@
   z-index: 9999999;
 
   --domlint-bad: #da0e0e;
-  --domlint-okay: #008600;
+  --domlint-good: #008600;
   --domlint-okay: #eb7900;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .domlint-ui-score-value-good {
-  color: var(--domlint-okay);
+  color: var(--domlint-good);
 }
 
 .domlint-ui-score-value-okay {

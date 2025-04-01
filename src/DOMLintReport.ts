@@ -23,6 +23,10 @@ export interface DOMLintElementReport {
    */
   html?: string;
   /**
+   * Pass
+   */
+  pass: boolean;
+  /**
    * Attributes
    */
   attributes: Record<string, DOMLintAttributeReport>;

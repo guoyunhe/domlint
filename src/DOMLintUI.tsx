@@ -77,60 +77,65 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
             </span>
             <span>Badness:</span>
             <span className={`domlint-ui-score-value domlint-ui-score-value-bad`}>
-              {report?.goodness || 0}
+              {report?.badness || 0}
             </span>
           </span>
         </div>
 
         {report?.elements && (
           <div className="domlint-ui-report">
-            {Object.entries(report?.elements).map(([selector, elemReport]) => (
-              <div key={selector} className="domlint-ui-element">
-                <a
-                  href="#"
-                  className="domlint-ui-selector"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const elem = document.querySelector(selector);
-                    elem?.scrollIntoView({
-                      block: 'center',
-                      inline: 'center',
-                      behavior: 'smooth',
-                    });
-                    setHighlightElement(elem);
-                  }}
-                >
-                  {selector}
-                </a>
+            {Object.entries(report?.elements)
+              .filter(([, elemReport]) => !elemReport.pass)
+              .map(([selector, elemReport]) => (
+                <div key={selector} className="domlint-ui-element">
+                  {String(elemReport.pass)}
+                  <a
+                    href="#"
+                    className="domlint-ui-selector"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const elem = document.querySelector(selector);
+                      elem?.scrollIntoView({
+                        block: 'center',
+                        inline: 'center',
+                        behavior: 'smooth',
+                      });
+                      setHighlightElement(elem);
+                    }}
+                  >
+                    {selector}
+                  </a>
 
-                <div className="domlint-ui-attribute-list">
-                  {Object.entries(elemReport.attributes).map(([name, attrReport]) => (
-                    <div key={name} className="domlint-ui-attribute">
-                      <span className="domlint-ui-attribute-name">{name}</span>
-                      <span>: </span>
-                      <span
-                        className={cn(
-                          'domlint-ui-attribute-value',
-                          !attrReport.pass && 'domlint-ui-attribute-value-bad',
-                        )}
-                      >
-                        {renderValue(attrReport.value)}
-                      </span>
-                      <span>&nbsp;</span>
-                      {!attrReport.pass && (
-                        <span className="domlint-ui-attribute-expected">
-                          [expected:{' '}
-                          {Array.isArray(attrReport.expected)
-                            ? attrReport.expected.map(renderValue)
-                            : renderValue(attrReport.expected || 'none')}
-                          ]
-                        </span>
-                      )}
-                    </div>
-                  ))}
+                  <div className="domlint-ui-attribute-list">
+                    {Object.entries(elemReport.attributes)
+                      .filter(([, attrReport]) => !attrReport.pass)
+                      .map(([name, attrReport]) => (
+                        <div key={name} className="domlint-ui-attribute">
+                          <span className="domlint-ui-attribute-name">{name}</span>
+                          <span>: </span>
+                          <span
+                            className={cn(
+                              'domlint-ui-attribute-value',
+                              !attrReport.pass && 'domlint-ui-attribute-value-bad',
+                            )}
+                          >
+                            {renderValue(attrReport.value)}
+                          </span>
+                          <span>&nbsp;</span>
+                          {!attrReport.pass && (
+                            <span className="domlint-ui-attribute-expected">
+                              [expected:{' '}
+                              {Array.isArray(attrReport.expected)
+                                ? attrReport.expected.map(renderValue)
+                                : renderValue(attrReport.expected || 'none')}
+                              ]
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         )}
       </div>
@@ -140,7 +145,7 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
 }
 
 function renderValue(value: string, index?: number) {
-  if (value.startsWith('#') || value.startsWith('rgba(')) {
+  if (value.startsWith('#') || value.startsWith('rgb(') || value.startsWith('rgba(')) {
     return (
       <span key={index} className="domlint-ui-value">
         <span className="domlint-ui-color-box" style={{ background: value }} /> {value}

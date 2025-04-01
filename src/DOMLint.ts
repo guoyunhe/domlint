@@ -18,6 +18,7 @@ export class DOMLint {
         if (elemRule.exist && !document.querySelector(selector)) {
           report.elements[selector] = {
             selector,
+            pass: false,
             attributes: {
               exist: {
                 pass: false,
@@ -47,6 +48,7 @@ export class DOMLint {
           const elemReport: DOMLintElementReport = report.elements[uniqueSelector] || {
             selector: uniqueSelector,
             html: elem.outerHTML.substring(0, 100),
+            pass: true,
             attributes: {},
           };
 
@@ -58,6 +60,7 @@ export class DOMLint {
               value: 'found',
               expected: elemRule.deprecated.expected ?? 'removed',
             };
+            elemReport.pass = false;
           }
 
           elemRule.style &&
@@ -88,6 +91,7 @@ export class DOMLint {
               attrReport.pass = !!rule.expected && validateStyle(elem, name, rule.expected);
 
               elemReport.attributes[reportKey] = attrReport;
+              elemReport.pass &&= attrReport.pass;
             });
 
           if (Object.keys(elemReport.attributes).length > 0) {

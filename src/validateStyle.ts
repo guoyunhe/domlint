@@ -5,7 +5,7 @@ export function validateStyle(
   name: string,
   expected: string | string[],
 ): boolean | null {
-  for (const side of ['', '-top', '-bottom', '-left', '-end']) {
+  for (const side of ['', '-top', '-bottom', '-left', '-right']) {
     if (name === `border${side}-color`) {
       // for zero width border, border-color comparison is meaningless
       if (elem.computedStyleMap().get(`border${side}-width`)?.toString() === '0px') {

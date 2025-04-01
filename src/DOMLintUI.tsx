@@ -88,7 +88,6 @@ export function DOMLintUI({ config }: DOMLintUIProps) {
               .filter(([, elemReport]) => !elemReport.pass)
               .map(([selector, elemReport]) => (
                 <div key={selector} className="domlint-ui-element">
-                  {String(elemReport.pass)}
                   <a
                     href="#"
                     className="domlint-ui-selector"

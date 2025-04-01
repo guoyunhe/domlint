@@ -88,10 +88,13 @@ export class DOMLint {
                   colorObj.a === 1 ? colorObj.toHexString() : colorObj.toRgbString();
               }
 
-              attrReport.pass = !!rule.expected && validateStyle(elem, name, rule.expected);
+              const pass = !!rule.expected && validateStyle(elem, name, rule.expected);
 
-              elemReport.attributes[reportKey] = attrReport;
-              elemReport.pass &&= attrReport.pass;
+              if (typeof pass === 'boolean') {
+                attrReport.pass = pass;
+                elemReport.attributes[reportKey] = attrReport;
+                elemReport.pass &&= attrReport.pass;
+              }
             });
 
           if (Object.keys(elemReport.attributes).length > 0) {

@@ -85,7 +85,7 @@ export class DOMLint {
                   colorObj.a === 1 ? colorObj.toHexString() : colorObj.toRgbString();
               }
 
-              const pass = !!rule.expected && validateStyle(elem, name, rule.expected);
+              const pass = !!rule.expected && validateStyle(elem, name, rule.expected, rule.ignore);
 
               if (typeof pass === 'boolean') {
                 attrReport.pass = pass;

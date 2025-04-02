@@ -5,6 +5,7 @@ export function validateStyle(
   elem: HTMLElement,
   name: string,
   expected: string | string[],
+  ignore?: string | string[],
 ): boolean | null {
   for (const side of ['', '-top', '-bottom', '-left', '-right']) {
     if (name === `border${side}-color`) {
@@ -26,10 +27,15 @@ export function validateStyle(
   }
 
   if (Array.isArray(expected)) {
-    return expected.some((item) => validateStyle(elem, name, item));
+    return expected.some((item) => validateStyle(elem, name, item, ignore));
   }
 
   const value = elem.computedStyleMap().get(name)?.toString();
+
+  if (!value) return null;
+
+  if (Array.isArray(ignore) && ignore.includes(value)) return null;
+  if (value === ignore) return null;
 
   if (name === 'color' || name.endsWith('-color')) {
     return new FastColor(value || 'rgba(0,0,0,0)').equals(new FastColor(expected));

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2 - 2025-04-02
+
+- Ignore elements without direct child text nodes for font/text style checking
+
 ## 0.4.1 - 2025-04-02
 
 - Ignore zero-size element for style checking

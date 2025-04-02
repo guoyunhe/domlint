@@ -8,6 +8,8 @@ export interface DOMLintConfig {
 }
 
 export interface DOMLintElementRule {
+  select?: string | ((elem: Element) => boolean);
+  ignore?: string | ((elem: Element) => boolean);
   exist?: DOMLintRule;
   deprecated?: DOMLintRule;
   style?: Record<string, DOMLintRule>;

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.3 - 2025-04-02
+
+- Support ignore specific values
+
 ## 0.4.2 - 2025-04-02
 
 - Ignore elements without direct child text nodes for font/text style checking

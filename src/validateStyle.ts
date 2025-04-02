@@ -7,6 +7,13 @@ export function validateStyle(
   expect: string | string[],
   ignore?: string | string[],
 ): boolean | null {
+  const value = elem.computedStyleMap().get(name)?.toString();
+
+  if (!value) return null;
+
+  if (Array.isArray(ignore) && ignore.includes(value)) return null;
+  if (value === ignore) return null;
+
   for (const side of ['', '-top', '-bottom', '-left', '-right']) {
     if (name === `border${side}-color`) {
       // for zero width border, border-color comparison is meaningless
@@ -29,13 +36,6 @@ export function validateStyle(
   if (Array.isArray(expect)) {
     return expect.some((item) => validateStyle(elem, name, item, ignore));
   }
-
-  const value = elem.computedStyleMap().get(name)?.toString();
-
-  if (!value) return null;
-
-  if (Array.isArray(ignore) && ignore.includes(value)) return null;
-  if (value === ignore) return null;
 
   if (name === 'color' || name.endsWith('-color')) {
     return new FastColor(value || 'rgba(0,0,0,0)').equals(new FastColor(expect));

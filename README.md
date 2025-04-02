@@ -17,13 +17,13 @@ const domlint = new DOMLint({
   rules: {
     a: {
       style: {
-        'border-left-width': { expected: ['0px', '1px'] },
+        'border-left-width': { expect: ['0px', '1px'] },
       },
     },
     'code, pre': {
       style: {
         'background-color': {
-          expected: '#f6f8fa',
+          expect: '#f6f8fa',
         },
       },
     },

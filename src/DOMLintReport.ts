@@ -37,5 +37,5 @@ export interface DOMLintAttributeReport {
   goodness: number;
   badness: number;
   value: string;
-  expected?: string | string[];
+  expect?: string | string[];
 }

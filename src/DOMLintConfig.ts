@@ -16,6 +16,6 @@ export interface DOMLintElementRule {
 export interface DOMLintRule {
   goodness?: number;
   badness?: number;
-  expected?: string | string[];
+  expect?: string | string[];
   ignore?: string | string[];
 }

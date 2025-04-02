@@ -4,7 +4,7 @@ import { haveTextNode } from './haveTextNode';
 export function validateStyle(
   elem: HTMLElement,
   name: string,
-  expected: string | string[],
+  expect: string | string[],
   ignore?: string | string[],
 ): boolean | null {
   for (const side of ['', '-top', '-bottom', '-left', '-right']) {
@@ -26,8 +26,8 @@ export function validateStyle(
     return null;
   }
 
-  if (Array.isArray(expected)) {
-    return expected.some((item) => validateStyle(elem, name, item, ignore));
+  if (Array.isArray(expect)) {
+    return expect.some((item) => validateStyle(elem, name, item, ignore));
   }
 
   const value = elem.computedStyleMap().get(name)?.toString();
@@ -38,11 +38,11 @@ export function validateStyle(
   if (value === ignore) return null;
 
   if (name === 'color' || name.endsWith('-color')) {
-    return new FastColor(value || 'rgba(0,0,0,0)').equals(new FastColor(expected));
-  } else if (name.endsWith('-radius') && expected === 'round') {
+    return new FastColor(value || 'rgba(0,0,0,0)').equals(new FastColor(expect));
+  } else if (name.endsWith('-radius') && expect === 'round') {
     const rect = elem.getBoundingClientRect();
     return !!value && parseFloat(value) >= Math.min(rect.width, rect.height) / 2;
   } else {
-    return value === expected;
+    return value === expect;
   }
 }

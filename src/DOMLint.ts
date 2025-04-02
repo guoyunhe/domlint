@@ -26,7 +26,7 @@ export class DOMLint {
                 goodness: elemRule.exist.goodness ?? 1,
                 badness: elemRule.exist.badness ?? 1,
                 value: 'missing',
-                expected: elemRule.exist.expected ?? 'existing',
+                expect: elemRule.exist.expect ?? 'existing',
               },
             },
           };
@@ -59,7 +59,7 @@ export class DOMLint {
               goodness: elemRule.deprecated.goodness ?? 1,
               badness: elemRule.deprecated.badness ?? 1,
               value: 'found',
-              expected: elemRule.deprecated.expected ?? 'removed',
+              expect: elemRule.deprecated.expect ?? 'removed',
             };
             elemReport.pass = false;
           }
@@ -74,7 +74,7 @@ export class DOMLint {
                 goodness: rule.goodness ?? 1,
                 badness: rule.badness ?? 1,
                 value: elem.computedStyleMap().get(name)?.toString() ?? 'none',
-                expected: rule.expected,
+                expect: rule.expect,
               };
 
               if (!attrReport.pass) return;
@@ -85,7 +85,7 @@ export class DOMLint {
                   colorObj.a === 1 ? colorObj.toHexString() : colorObj.toRgbString();
               }
 
-              const pass = !!rule.expected && validateStyle(elem, name, rule.expected, rule.ignore);
+              const pass = !!rule.expect && validateStyle(elem, name, rule.expect, rule.ignore);
 
               if (typeof pass === 'boolean') {
                 attrReport.pass = pass;

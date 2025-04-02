@@ -22,7 +22,7 @@ export function printReport(report?: DOMLintReport) {
         line += attrReport.value;
       } else {
         line += chalk.red(attrReport.value);
-        line += ` [expected: ${Array.isArray(attrReport.expected) ? attrReport.expected?.join(' | ') : attrReport.expected}]`;
+        line += ` [expect: ${Array.isArray(attrReport.expect) ? attrReport.expect?.join(' | ') : attrReport.expect}]`;
       }
       output.push(line);
     });

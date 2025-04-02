@@ -1,4 +1,5 @@
 import { FastColor } from '@ant-design/fast-color';
+import { haveTextNode } from './haveTextNode';
 
 export function validateStyle(
   elem: HTMLElement,
@@ -12,6 +13,16 @@ export function validateStyle(
         return null;
       }
     }
+  }
+
+  // for element without direct child text nodes, skip all font/text style checking
+  if (
+    ['color', 'font-family', 'font-size', 'font-style', 'font-weight', 'text-decoration'].includes(
+      name,
+    ) &&
+    !haveTextNode(elem)
+  ) {
+    return null;
   }
 
   if (Array.isArray(expected)) {

@@ -1,5 +1,4 @@
 import { FastColor } from '@ant-design/fast-color';
-import { compareValue } from './compareValue';
 import { haveTextNode } from './haveTextNode';
 
 export function validateStyle(
@@ -12,12 +11,7 @@ export function validateStyle(
 
   if (!value) return null;
 
-  if (
-    ignore &&
-    (Array.isArray(ignore)
-      ? ignore.some((item) => compareValue(value, item))
-      : compareValue(value, ignore))
-  ) {
+  if (ignore && validateStyle(elem, name, ignore)) {
     return null;
   }
 

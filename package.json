@@ -1,6 +1,6 @@
 {
   "name": "domlint",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Lint DOM styles and attributes",
   "keywords": [
     "lint",

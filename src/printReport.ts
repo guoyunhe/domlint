@@ -11,19 +11,18 @@ export function printReport(report?: DOMLintReport) {
   const output: string[] = [];
 
   Object.entries(report.elements).forEach(([selector, elemReport]) => {
+    if (elemReport.pass) return;
     output.push(chalk.blue(selector));
     if (elemReport.html) {
       output.push(chalk.gray(elemReport.html));
     }
 
     Object.entries(elemReport.attributes)?.forEach(([name, attrReport]) => {
+      if (attrReport.pass) return;
+
       let line = `\t${chalk.yellow(name)}: `;
-      if (attrReport.pass) {
-        line += attrReport.value;
-      } else {
-        line += chalk.red(attrReport.value);
-        line += ` [expect: ${Array.isArray(attrReport.expect) ? attrReport.expect?.join(' | ') : attrReport.expect}]`;
-      }
+      line += chalk.red(attrReport.value);
+      line += ` [expect: ${Array.isArray(attrReport.expect) ? attrReport.expect?.join(' | ') : attrReport.expect}]`;
       output.push(line);
     });
     output.push('');

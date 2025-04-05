@@ -1,4 +1,5 @@
 import { FastColor } from '@ant-design/fast-color';
+import { compareValue } from './compareValue';
 import { haveTextNode } from './haveTextNode';
 
 export function validateStyle(
@@ -11,8 +12,14 @@ export function validateStyle(
 
   if (!value) return null;
 
-  if (Array.isArray(ignore) && ignore.includes(value)) return null;
-  if (value === ignore) return null;
+  if (
+    ignore &&
+    (Array.isArray(ignore)
+      ? ignore.some((item) => compareValue(value, item))
+      : compareValue(value, ignore))
+  ) {
+    return null;
+  }
 
   for (const side of ['', '-top', '-bottom', '-left', '-right']) {
     if (name === `border${side}-color`) {

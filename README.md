@@ -18,6 +18,7 @@ const domlint = new DOMLint({
     a: {
       style: {
         'border-left-width': { expect: ['0px', '1px'] },
+        'border-left-color': { expect: '#666666', ignore: '#ffffff' },
       },
     },
     'code, pre': {
@@ -40,13 +41,14 @@ const domlint = new DOMLint({
   ignore: ['script'],
 });
 
-const report = domlint.lint();
-domlint.print();
+setTimeout(() => {
+  const report = domlint.lint();
+  domlint.print();
+}, 1000);
 
 render(
   <div>
-    {report.score}
-    <a id="abc" />
+    <a id="abc" style={{ border: '1px solid #ffffff' }} />
   </div>,
 );
 ```

@@ -43,6 +43,13 @@ export function validateStyle(
   } else if (name.endsWith('-radius') && expect === 'round') {
     const rect = elem.getBoundingClientRect();
     return !!value && parseFloat(value) >= Math.min(rect.width, rect.height) / 2;
+  } else if (
+    value.endsWith('px') &&
+    window.devicePixelRatio >= 1 &&
+    window.devicePixelRatio % 1 !== 0
+  ) {
+    // when devicePixelRatio isn't integer, computed size might not be integer, too
+    return Math.abs(parseFloat(value) - parseFloat(expect)) < 0.5;
   } else {
     return value === expect;
   }

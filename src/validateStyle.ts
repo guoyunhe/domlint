@@ -39,7 +39,8 @@ export function validateStyle(
   }
 
   if (name === 'color' || name.endsWith('-color')) {
-    return new FastColor(value || 'rgba(0,0,0,0)').equals(new FastColor(expect));
+    // color comparison in different format
+    return new FastColor(value).equals(new FastColor(expect));
   } else if (name.endsWith('-radius') && expect === 'round') {
     const rect = elem.getBoundingClientRect();
     return !!value && parseFloat(value) >= Math.min(rect.width, rect.height) / 2;

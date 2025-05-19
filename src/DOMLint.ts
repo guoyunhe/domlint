@@ -91,6 +91,10 @@ export class DOMLint {
                 attrReport.pass = pass;
                 elemReport.attributes[reportKey] = attrReport;
                 elemReport.pass &&= attrReport.pass;
+
+                if (pass === false) {
+                  attrReport.expect = rule.expect;
+                }
               }
             });
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.4 - 2025-05-19
+## 0.4.7 - 2025-05-19
 
 - Fixed report expected not updated
 

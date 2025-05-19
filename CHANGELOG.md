@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.4 - 2025-05-19
+
+- Fixed report expected not updated
+
 ## 0.4.3 - 2025-04-02
 
 - Support ignore specific values

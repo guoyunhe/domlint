@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2020",
     "lib": ["esnext", "dom"],
     "allowJs": true,
     "checkJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "types": ["node", "rive/globals"],
+    "types": ["node", "rive/globals", "vitest/globals"],
     "noEmit": true,
     "strict": true
   },

@@ -4,6 +4,7 @@
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
-    "unifiedjs.vscode-mdx"
+    "unifiedjs.vscode-mdx",
+    "vitest.explorer"
   ]
 }

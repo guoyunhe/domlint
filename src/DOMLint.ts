@@ -39,8 +39,10 @@ export class DOMLint {
 
       this.config.rules &&
         Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
-          const matched = elem.matches(selector);
-          if (!matched) return;
+          if (!elem.matches(selector)) return;
+
+          if (typeof elemRule.ignore === 'string' && elem.matches(elemRule.ignore)) return;
+          if (typeof elemRule.ignore === 'function' && elemRule.ignore(elem)) return;
 
           const uniqueSelector = unique(elem);
 

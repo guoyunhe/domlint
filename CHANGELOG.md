@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.9 - 2025-07-28
+
+- Fixed rule ignore not working
+
 ## 0.4.7 - 2025-05-19
 
 - Fixed report expected not updated

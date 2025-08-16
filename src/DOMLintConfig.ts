@@ -3,7 +3,7 @@ export interface DOMLintConfig {
     good: number;
     okay: number;
   };
-  rules?: Record<string, DOMLintElementRule>;
+  rules?: Record<string, DOMLintElementRule> | DOMLintElementRule[];
   ignore?: string[];
 }
 

@@ -23,6 +23,7 @@
     "name": "Guo Yunhe",
     "email": "i@guoyunhe.me"
   },
+  "license": "MPL-2.0",
   "sideEffects": false,
   "type": "module",
   "exports": {

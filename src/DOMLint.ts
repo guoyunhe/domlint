@@ -37,70 +37,77 @@ export class DOMLint {
       const ignored = this.config.ignore?.some((selector) => elem.matches(selector));
       if (ignored) return;
 
-      this.config.rules &&
-        Object.entries(this.config.rules).forEach(([selector, elemRule]) => {
-          if (!elem.matches(selector)) return;
+      const rules = Array.isArray(this.config.rules)
+        ? this.config.rules
+        : Object.entries(this.config.rules || {}).map(([select, rule]) => ({ select, ...rule }));
 
-          if (typeof elemRule.ignore === 'string' && elem.matches(elemRule.ignore)) return;
-          if (typeof elemRule.ignore === 'function' && elemRule.ignore(elem)) return;
+      rules.forEach((elemRule) => {
+        const matched =
+          typeof elemRule.select === 'function'
+            ? elemRule.select(elem)
+            : elem.matches(elemRule.select || '*');
 
-          const uniqueSelector = unique(elem);
+        if (!matched) return;
 
-          if (!uniqueSelector) return;
+        if (typeof elemRule.ignore === 'string' && elem.matches(elemRule.ignore)) return;
+        if (typeof elemRule.ignore === 'function' && elemRule.ignore(elem)) return;
 
-          const elemReport: DOMLintElementReport = report.elements[uniqueSelector] || {
-            selector: uniqueSelector,
-            html: elem.outerHTML.substring(0, 100),
-            pass: true,
-            attributes: {},
+        const uniqueSelector = unique(elem);
+
+        if (!uniqueSelector) return;
+
+        const elemReport: DOMLintElementReport = report.elements[uniqueSelector] || {
+          selector: uniqueSelector,
+          html: elem.outerHTML.substring(0, 100),
+          pass: true,
+          attributes: {},
+        };
+
+        if (elemRule.deprecated) {
+          elemReport.attributes.deprecated = {
+            pass: false,
+            goodness: elemRule.deprecated.goodness ?? 1,
+            badness: elemRule.deprecated.badness ?? 1,
+            value: 'found',
+            expect: elemRule.deprecated.expect ?? 'removed',
           };
+          elemReport.pass = false;
+        }
 
-          if (elemRule.deprecated) {
-            elemReport.attributes.deprecated = {
-              pass: false,
-              goodness: elemRule.deprecated.goodness ?? 1,
-              badness: elemRule.deprecated.badness ?? 1,
-              value: 'found',
-              expect: elemRule.deprecated.expect ?? 'removed',
+        elemRule.style &&
+          elem instanceof HTMLElement &&
+          needValidateStyle(elem) &&
+          Object.entries(elemRule.style).forEach(([name, rule]) => {
+            const reportKey = `style.${name}`;
+            const attrReport: DOMLintAttributeReport = elemReport.attributes[reportKey] ?? {
+              pass: true,
+              goodness: rule.goodness ?? 1,
+              badness: rule.badness ?? 1,
+              value: elem.computedStyleMap().get(name)?.toString() ?? 'none',
+              expect: rule.expect,
             };
-            elemReport.pass = false;
-          }
 
-          elemRule.style &&
-            elem instanceof HTMLElement &&
-            needValidateStyle(elem) &&
-            Object.entries(elemRule.style).forEach(([name, rule]) => {
-              const reportKey = `style.${name}`;
-              const attrReport: DOMLintAttributeReport = elemReport.attributes[reportKey] ?? {
-                pass: true,
-                goodness: rule.goodness ?? 1,
-                badness: rule.badness ?? 1,
-                value: elem.computedStyleMap().get(name)?.toString() ?? 'none',
-                expect: rule.expect,
-              };
+            if (!attrReport.pass) return;
 
-              if (!attrReport.pass) return;
+            if (name === 'color' || name.endsWith('-color')) {
+              const colorObj = new FastColor(attrReport.value);
+              attrReport.value = colorObj.a === 1 ? colorObj.toHexString() : colorObj.toRgbString();
+            }
 
-              if (name === 'color' || name.endsWith('-color')) {
-                const colorObj = new FastColor(attrReport.value);
-                attrReport.value =
-                  colorObj.a === 1 ? colorObj.toHexString() : colorObj.toRgbString();
-              }
+            const pass = !!rule.expect && validateStyle(elem, name, rule.expect, rule.ignore);
 
-              const pass = !!rule.expect && validateStyle(elem, name, rule.expect, rule.ignore);
+            if (typeof pass === 'boolean') {
+              attrReport.pass = pass;
+              attrReport.expect = rule.expect;
+              elemReport.attributes[reportKey] = attrReport;
+              elemReport.pass &&= attrReport.pass;
+            }
+          });
 
-              if (typeof pass === 'boolean') {
-                attrReport.pass = pass;
-                attrReport.expect = rule.expect;
-                elemReport.attributes[reportKey] = attrReport;
-                elemReport.pass &&= attrReport.pass;
-              }
-            });
-
-          if (Object.keys(elemReport.attributes).length > 0) {
-            report.elements[uniqueSelector] = elemReport;
-          }
-        });
+        if (Object.keys(elemReport.attributes).length > 0) {
+          report.elements[uniqueSelector] = elemReport;
+        }
+      });
     });
 
     Object.values(report.elements).forEach((elemReport) => {

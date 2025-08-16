@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0 - 2025-08-16
+
+- Support array rules
+
 ## 0.4.9 - 2025-07-28
 
 - Fixed rule ignore not working

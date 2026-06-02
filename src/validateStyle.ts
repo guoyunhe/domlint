@@ -17,8 +17,11 @@ export function validateStyle(
 
   for (const side of ['', '-top', '-bottom', '-left', '-right']) {
     if (name === `border${side}-color`) {
-      // for zero width border, border-color comparison is meaningless
-      if (elem.computedStyleMap().get(`border${side}-width`)?.toString() === '0px') {
+      // for zero width / none border, border-color comparison is meaningless
+      if (
+        elem.computedStyleMap().get(`border${side}-width`)?.toString() === '0px' ||
+        elem.computedStyleMap().get(`border${side}-style`)?.toString() === 'none'
+      ) {
         return null;
       }
     }

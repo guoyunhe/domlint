@@ -25,6 +25,12 @@ export function validateStyle(
         return null;
       }
     }
+    if (name === `border${side}-width`) {
+      // for none border, border-width comparison is meaningless
+      if (elem.computedStyleMap().get(`border${side}-style`)?.toString() === 'none') {
+        return null;
+      }
+    }
   }
 
   // for element without direct child text nodes, skip all font/text style checking
